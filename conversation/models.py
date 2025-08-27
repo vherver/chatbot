@@ -62,7 +62,7 @@ class Message(models.Model):
     def get_last_messages_from_conversation(
             cls,
             conversation: Conversation,
-            quantity: int) -> QuerySet["Message"]:
+            quantity: int = 5) -> QuerySet["Message"]:
         """
         Retrieve the latest messages from a given conversation.
         """

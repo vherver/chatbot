@@ -1,6 +1,7 @@
 from uuid import UUID
 
 from django.db import transaction
+from django.db.models import QuerySet
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound
@@ -33,12 +34,14 @@ class MessageView(CreateAPIView):
 
         conversation = self.get_conversation(conversation_id)
 
+        messages = self.get_last_messages(conversation)
+
         self.create_message(conversation, message_text, Message.Role.USER)
 
         return Response(status=status.HTTP_201_CREATED)
 
     @staticmethod
-    def get_conversation(conversation_id: UUID) -> Conversation:
+    def get_conversation(conversation_id) -> Conversation:
         if conversation_id:
             try:
                 conversation = Conversation.objects.select_for_update().get(
@@ -63,3 +66,7 @@ class MessageView(CreateAPIView):
             content=content,
         )
         return message
+
+    @staticmethod
+    def get_last_messages(conversation: Conversation) -> QuerySet["Message"]:
+        return Message.get_last_messages_from_conversation(conversation)
