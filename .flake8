@@ -1,0 +1,25 @@
+[flake8]
+include =
+    appointment/*
+    communication/*
+    core/*
+    HIS/*
+    users/*
+
+exclude =
+    .idea,
+    reports,
+    templates,
+    .tox,
+    *.egg,
+    *.egg-info,
+    __pycache__,
+    build,
+    dist,
+    migrations,
+    tests,
+    .git,
+    venv,
+    env
+
+max-line-length = 88

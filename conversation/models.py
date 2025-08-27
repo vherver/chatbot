@@ -1,13 +1,16 @@
 import uuid
 from django.db import models
-from django.db.models import Q
 
 
 class Conversation(models.Model):
     """
     Represents a user conversation.
     """
-    conversation_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    conversation_id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False
+    )
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -33,7 +36,12 @@ class Message(models.Model):
         db_index=True,
     )
 
-    role = models.CharField(max_length=10, choices=Role.choices, default=Role.USER, db_index=True)
+    role = models.CharField(
+        max_length=10,
+        choices=Role.choices,
+        default=Role.USER,
+        db_index=True
+    )
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
