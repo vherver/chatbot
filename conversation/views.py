@@ -32,11 +32,11 @@ class MessageView(CreateAPIView):
         conversation_id = serializer.validated_data.get("conversation_id")
         message_text = serializer.validated_data["message"]
 
-        conversation = self.get_conversation(conversation_id)
-
-        messages = self.get_last_messages(conversation)
+        conversation = self.get_conversation("a66cb9e5d9f04691ad43b1deb07bc214")
 
         self.create_message(conversation, message_text, Message.Role.USER)
+
+        messages = self.get_last_messages(conversation)
 
         return Response(status=status.HTTP_201_CREATED)
 

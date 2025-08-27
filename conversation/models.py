@@ -56,7 +56,7 @@ class Message(models.Model):
         ]
 
     def __str__(self):
-        return f"[{self.role}] {self.conversation_id} · {str(self.message_id)[:8]}"
+        return f"[{self.role}] {self.conversation_id} · {str(self.message_id)}"
 
     @classmethod
     def get_last_messages_from_conversation(
