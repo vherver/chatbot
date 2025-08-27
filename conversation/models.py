@@ -1,5 +1,6 @@
 import uuid
 from django.db import models
+from django.db.models import QuerySet
 
 
 class Conversation(models.Model):
@@ -27,7 +28,8 @@ class Message(models.Model):
         BOT = "bot", "Bot"
         USER = "user", "User"
 
-    message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    message_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
+                                  editable=False)
 
     conversation = models.ForeignKey(
         Conversation,
@@ -55,3 +57,20 @@ class Message(models.Model):
 
     def __str__(self):
         return f"[{self.role}] {self.conversation_id} · {str(self.message_id)[:8]}"
+
+    @classmethod
+    def get_last_messages_from_conversation(
+            cls,
+            conversation: Conversation,
+            quantity: int) -> QuerySet["Message"]:
+        """
+        Retrieve the latest messages from a given conversation.
+        """
+        qs = (
+                 cls.objects
+                 .filter(conversation=conversation)
+                 .select_related("conversation")
+                 .order_by("-created_at", "-message_id")
+             )[: max(quantity, 0)]
+
+        return qs
