@@ -16,14 +16,15 @@ class OpenAIClient:
         self.max_output_tokens = settings.OPENAI_MAX_OUTPUT_TOKENS
         self.temperature = settings.OPENAI_TEMPERATURE
 
-    def get_topic_and_stance(self, message: str) -> [str, str]:
+    def get_topic_and_stance(self, message: str) -> [str, str, str]:
         """
         Identify topic and stance in conversation
         """
         system = {
             "role": "system",
             "content": (
-                "Extract the topic and the bot_stance (pro, con) the BOT "
+                "Extract the topic, the bot_stance (pro, con) and response "
+                " the BOT "
                 "should take "
                 "from "
                 "the user's message. "
@@ -33,7 +34,8 @@ class OpenAIClient:
                 "2) If the user states their OWN stance only, "
                 "set the BOT to the opposite."
                 "3) If neither is stated, infer a reasonable stance "
-                "from the message; if ambiguous, pick 'pro'."
+                "from the message; if ambiguous, pick 'pro'. Add the first "
+                "response to user related of topic and bot stance as response"
                 "Return ONLY a JSON"
             )
         }
@@ -49,4 +51,4 @@ class OpenAIClient:
         )
 
         data = json.loads(resp.output_text)
-        return data["topic"], data["bot_stance"]
+        return data["topic"], data["bot_stance"], data["response"]

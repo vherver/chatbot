@@ -33,20 +33,28 @@ class MessageView(CreateAPIView):
 
         conversation_id = serializer.validated_data.get("conversation_id")
         message_text = serializer.validated_data["message"]
+        bot_response = ''
 
-        conversation = self.get_conversation("a66cb9e5d9f04691ad43b1deb07bc214")
+        conversation, created = self.get_conversation("d42fc3caecde429abf05ff730e766244")
+
+        if created:
+            topic, stance, bot_response = client.get_topic_and_stance(
+                message=message_text)
+            conversation.set_topic_and_stance(topic, stance)
+        else:
+            pass
 
         self.create_message(conversation, message_text, Message.Role.USER)
+        self.create_message(conversation, bot_response, Message.Role.BOT)
 
-        topic, stance = client.get_topic_and_stance(message=message_text)
-        conversation.set_topic_and_stance(topic, stance)
 
         messages = self.get_last_messages(conversation)
 
         return Response(status=status.HTTP_201_CREATED)
 
     @staticmethod
-    def get_conversation(conversation_id) -> Conversation:
+    def get_conversation(conversation_id) -> [Conversation, bool]:
+        created = False
         if conversation_id:
             try:
                 conversation = Conversation.objects.select_for_update().get(
@@ -55,9 +63,10 @@ class MessageView(CreateAPIView):
             except Conversation.DoesNotExist as e:
                 raise NotFound("Conversation not found.") from e
         else:
+            created = True
             conversation = Conversation.objects.create()
 
-        return conversation
+        return conversation, created
 
     @staticmethod
     def create_message(
