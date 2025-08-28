@@ -124,3 +124,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+API_KEY = "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"
+OPENAI_MODEL = "gpt-4.1-mini"
+OPENAI_TEMPERATURE = 0.7
+OPENAI_MAX_OUTPUT_TOKENS = 400

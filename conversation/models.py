@@ -12,11 +12,18 @@ class Conversation(models.Model):
         default=uuid.uuid4,
         editable=False
     )
+    topic = models.TextField()
+    stance = models.CharField(max_length=5)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return f"Conversation {self.conversation_id}"
+
+    def set_topic_and_stance(self, topic, stance):
+        self.topic = topic
+        self.stance = stance
+        self.save()
 
 
 class Message(models.Model):

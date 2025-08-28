@@ -10,6 +10,7 @@ from rest_framework.response import Response
 
 from conversation.models import Conversation, Message
 from conversation.serializer import MessageRequestSerializer
+from lms import OpenAIClient
 
 
 class MessageView(CreateAPIView):
@@ -26,6 +27,7 @@ class MessageView(CreateAPIView):
 
     @transaction.atomic
     def post(self, request, *args, **kwargs):
+        client = OpenAIClient()
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -35,6 +37,9 @@ class MessageView(CreateAPIView):
         conversation = self.get_conversation("a66cb9e5d9f04691ad43b1deb07bc214")
 
         self.create_message(conversation, message_text, Message.Role.USER)
+
+        topic, stance = client.get_topic_and_stance(message=message_text)
+        conversation.set_topic_and_stance(topic, stance)
 
         messages = self.get_last_messages(conversation)
 
