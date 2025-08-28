@@ -32,7 +32,7 @@ class Message(models.Model):
     """
 
     class Role(models.TextChoices):
-        BOT = "bot", "Bot"
+        SYSTEM = "system", "System"
         USER = "user", "User"
 
     message_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
@@ -51,7 +51,7 @@ class Message(models.Model):
         default=Role.USER,
         db_index=True
     )
-    content = models.TextField()
+    message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -77,7 +77,7 @@ class Message(models.Model):
                  cls.objects
                  .filter(conversation=conversation)
                  .select_related("conversation")
-                 .order_by("-created_at", "-message_id")
+                 .order_by("-created_at")
              )[: max(quantity, 0)]
 
         return qs

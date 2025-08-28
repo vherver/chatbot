@@ -1,4 +1,5 @@
 import json
+from typing import List, Dict
 
 from django.conf import settings
 from openai import OpenAI
@@ -40,7 +41,7 @@ class OpenAIClient:
             )
         }
 
-        user = {"role": "user", "content": message}
+        user = {"role": "user", "message": message}
 
         resp = self.client.responses.create(
             model=self.model,
@@ -52,3 +53,37 @@ class OpenAIClient:
 
         data = json.loads(resp.output_text)
         return data["topic"], data["bot_stance"], data["response"]
+
+    def debate_reply(
+            self,
+            topic: str,
+            stance: str,
+            history: List[Dict],
+            user_text: str
+    ) -> str:
+
+        sys_behavior = {
+            "role": "system",
+            "content": (
+                "You are a debate bot (role system in history). Stay on the "
+                "original "
+                "topic "
+                "and keep your stance fixed. "
+                "Be persuasive but calm. Use 2–3 concise points and end with a guiding question. "
+                "If the user speaks Spanish, reply in Spanish."
+                f"Topic: {topic}"
+                f"Stance: {stance}"
+                "Never change your stance or the topic."
+            )
+        }
+
+        history.append({"role": "user", "content": user_text})
+
+        resp = self.client.responses.create(
+            model=self.model,
+            input=[sys_behavior, *history],
+            temperature=self.temperature,
+            max_output_tokens=self.max_output_tokens,
+        )
+
+        return resp.output_text

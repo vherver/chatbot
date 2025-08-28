@@ -1,3 +1,4 @@
+from typing import List, Dict
 from uuid import UUID
 
 from django.db import transaction
@@ -9,7 +10,8 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
 from conversation.models import Conversation, Message
-from conversation.serializer import MessageRequestSerializer
+from conversation.serializer import MessageRequestSerializer, \
+    ConversationResponseSerializer
 from lms import OpenAIClient
 
 
@@ -32,25 +34,27 @@ class MessageView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
 
         conversation_id = serializer.validated_data.get("conversation_id")
-        message_text = serializer.validated_data["message"]
+        user_text = serializer.validated_data["message"]
         bot_response = ''
 
-        conversation, created = self.get_conversation("d42fc3caecde429abf05ff730e766244")
+        conversation, created = self.get_conversation(conversation_id)
 
         if created:
             topic, stance, bot_response = client.get_topic_and_stance(
-                message=message_text)
+                message=user_text)
             conversation.set_topic_and_stance(topic, stance)
         else:
-            pass
+            messages = self.get_last_messages(conversation)
+            bot_response = client.debate_reply(conversation.topic,
+                                               conversation.stance, messages,
+                                               user_text)
 
-        self.create_message(conversation, message_text, Message.Role.USER)
-        self.create_message(conversation, bot_response, Message.Role.BOT)
+        self.create_message(conversation, user_text, Message.Role.USER)
+        self.create_message(conversation, bot_response, Message.Role.SYSTEM)
 
+        data = ConversationResponseSerializer.build(conversation)
 
-        messages = self.get_last_messages(conversation)
-
-        return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED, data=data)
 
     @staticmethod
     def get_conversation(conversation_id) -> [Conversation, bool]:
@@ -71,16 +75,20 @@ class MessageView(CreateAPIView):
     @staticmethod
     def create_message(
             conversation: Conversation,
-            content: str,
+            message: str,
             role: str) -> Message:
 
         message = Message.objects.create(
             conversation=conversation,
             role=role,
-            content=content,
+            message=message,
         )
         return message
 
     @staticmethod
-    def get_last_messages(conversation: Conversation) -> QuerySet["Message"]:
-        return Message.get_last_messages_from_conversation(conversation)
+    def get_last_messages(conversation: Conversation) -> List[Dict[str, str]]:
+        qs = Message.get_last_messages_from_conversation(conversation)
+        return [
+            {"role": m.role, "content": m.message}
+            for m in qs
+        ]
