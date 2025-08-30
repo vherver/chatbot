@@ -51,31 +51,37 @@ check-tools:
 
 # ---------- install ----------
 install: check-tools
-	@echo "==> Building images..."
+	@echo ==> Building images...
 	@$(DC) -f $(COMPOSE_FILE) --project-name $(PROJECT_NAME) build
 	@echo "Installation completed."
 
 # ---------- run ----------
-run:
-	@echo "==> Running service"
+run: check-tools
+	@echo ==> Running service
 	@$(DC) -f $(COMPOSE_FILE) --project-name $(PROJECT_NAME) up
 
 
 # ---------- down ----------
-down:
-	@echo "==> Stopping service"
+down: check-tools
+	@echo ==> Stopping service
 	@$(DC) -f $(COMPOSE_FILE) --project-name $(PROJECT_NAME) down
 
 # ---------- clean ----------
 clean: check-tools
-	@echo "==> Removing containers, volumes, and local images for project '$(PROJECT_NAME)'..."
+	@echo ==> Removing containers, volumes, and local images for project '$(PROJECT_NAME)'...
 ifeq ($(OS),Windows_NT)
 	@$(DC) -f $(COMPOSE_FILE) --project-name $(PROJECT_NAME) down -v --remove-orphans --rmi local || exit 0
 else
 	@$(DC) -f $(COMPOSE_FILE) --project-name $(PROJECT_NAME) down -v --remove-orphans --rmi local || true
 endif
-	@echo "✅ Cleanup completed."
+	@echo Cleanup completed.
 
+# ---------- test ----------
+test: install check-tools
+	@echo ==> Running Django tests...
+	@echo $(DC) -f $(COMPOSE_FILE) --project-name $(PROJECT_NAME) run --rm web pytest
+	@$(DC) -f $(COMPOSE_FILE) --project-name $(PROJECT_NAME) run --rm web sh -lc "if command -v pytest >/dev/null 2>&1; then pytest; else python manage.py test; fi"
+	@echo "Tests finished."
 
 # ---------- missing tool hints ----------
 _print-missing-win:
