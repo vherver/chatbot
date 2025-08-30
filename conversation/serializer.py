@@ -29,6 +29,7 @@ class MessageSerializer(serializers.ModelSerializer):
     """
     class Meta:
         model = Message
+        fields = ["role", "message"]
 
 
 class ConversationResponseSerializer(serializers.Serializer):

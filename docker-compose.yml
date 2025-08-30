@@ -1,0 +1,27 @@
+services:
+  web:
+    build: .
+    container_name: debate_app
+    command: sh init.sh
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    container_name: debate_db
+    environment:
+      POSTGRES_DB: debate_db
+      POSTGRES_USER: debate_user
+      POSTGRES_PASSWORD: debate_pass
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:

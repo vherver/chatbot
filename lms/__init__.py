@@ -41,7 +41,7 @@ class OpenAIClient:
             )
         }
 
-        user = {"role": "user", "message": message}
+        user = {"role": "user", "content": message}
 
         resp = self.client.responses.create(
             model=self.model,
