@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'conversation',
+    'test'
 ]
 
 MIDDLEWARE = [
@@ -134,3 +135,5 @@ API_KEY = "sk-svcacct-1vIoS4OnTXzgfqwTAV1YXjU6nTx7aeJT7-Cq0vPfeTPhuMCN8W5GnhbrQD
 OPENAI_MODEL = "gpt-4.1-mini"
 OPENAI_TEMPERATURE = 0.7
 OPENAI_MAX_OUTPUT_TOKENS = 400
+
+SWAGGER_USE_COMPAT_RENDERERS = False

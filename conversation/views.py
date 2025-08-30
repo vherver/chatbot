@@ -35,7 +35,6 @@ class MessageView(CreateAPIView):
 
         conversation_id = serializer.validated_data.get("conversation_id")
         user_text = serializer.validated_data["message"]
-        bot_response = ''
 
         conversation, created = self.get_conversation(conversation_id)
 
