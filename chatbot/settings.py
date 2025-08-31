@@ -133,7 +133,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-API_KEY = os.getenv("OPENIA_KEY", ""),
+API_KEY = os.getenv("OPENIA_KEY", "")
 OPENAI_MODEL = "gpt-4.1-mini"
 OPENAI_TEMPERATURE = 0.7
 OPENAI_MAX_OUTPUT_TOKENS = 400
