@@ -8,7 +8,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      OPENAI_KEY: sk-proj-*****
+      OPENAI_KEY: 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
     depends_on:
       - db
 

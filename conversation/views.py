@@ -31,7 +31,6 @@ class MessageView(CreateAPIView):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         client = OpenAIClient()
-        print("abc", settings.API_KEY)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
@@ -45,8 +44,16 @@ class MessageView(CreateAPIView):
             conversation.set_topic_and_stance(topic, stance)
         else:
             messages = self.get_last_messages(conversation)
+            conv_topic = conversation.topic
+            conv_stance = conversation.stance
+            if (conv_topic == "Undefined" or conversation.stance ==
+                    "und"):
+                topic, stance, bot_response = client.get_topic_and_stance(
+                    message=user_text)
+                conversation.set_topic_and_stance(topic, stance)
+
             bot_response = client.debate_reply(
-                conversation.topic, conversation.stance, messages, user_text
+                conv_topic, conv_stance, messages, user_text
             )
 
         self.create_message(conversation, user_text, Message.Role.USER)
