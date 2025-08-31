@@ -68,5 +68,7 @@ Example deployed URL:
 - **OpenAI Client** integration  
 - **Docker + Docker Compose** for containerization  
 - **Coverage + Pytest/Django Test Runner** for testing
+- **flake8** for linting (code style checks)  
+- **black** for automatic code formatting  
 ---
 

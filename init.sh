@@ -1,6 +1,4 @@
 echo "==> Compile Django localization messages"
-
-echo "==> Compile Django localization messages"
 django-admin compilemessages
 echo "==> Run Django migrations"
 python manage.py migrate

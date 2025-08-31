@@ -6,6 +6,7 @@ from rest_framework.exceptions import NotFound
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
+from chatbot import settings
 from conversation.models import Conversation, Message
 from conversation.serializer import (
     MessageRequestSerializer,
@@ -30,6 +31,7 @@ class MessageView(CreateAPIView):
     @transaction.atomic
     def post(self, request, *args, **kwargs):
         client = OpenAIClient()
+        print("abc", settings.API_KEY)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
