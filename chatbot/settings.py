@@ -21,7 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-)vpq=917&5r+b7#bq8d^9_p+q^-2pd6vbzz3!wbf&0oapl2lu+"
+SECRET_KEY = 'django-insecure-)vpq=917&5r+b7#bq8d^9_p+q^-2pd6vbzz3!wbf&0oapl2lu+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -133,7 +133,7 @@ STATIC_URL = "static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-API_KEY = os.getenv("OPENAI_KEY", "")
+API_KEY = os.getenv("OPENIA_KEY", ""),
 OPENAI_MODEL = "gpt-4.1-mini"
 OPENAI_TEMPERATURE = 0.7
 OPENAI_MAX_OUTPUT_TOKENS = 400
