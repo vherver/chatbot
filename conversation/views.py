@@ -34,6 +34,7 @@ class MessageView(CreateAPIView):
         print("abc", settings.API_KEY)
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        print("api", settings.API_KEY)
 
         conversation_id = serializer.validated_data.get("conversation_id")
         user_text = serializer.validated_data["message"]
