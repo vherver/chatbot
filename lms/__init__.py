@@ -7,8 +7,7 @@ from openai import OpenAI
 
 class OpenAIClient:
     """
-    Cliente thin-wrapper para generar réplicas de debate
-    con postura fija usando el Responses API.
+    Cliente thin-wrapper to generate replies
     """
 
     def __init__(self):
