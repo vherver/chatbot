@@ -9,34 +9,69 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Conversation',
+            name="Conversation",
             fields=[
-                ('conversation_id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('topic', models.TextField()),
-                ('stance', models.CharField(max_length=5)),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
+                (
+                    "conversation_id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                ("topic", models.TextField()),
+                ("stance", models.CharField(max_length=5)),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Message',
+            name="Message",
             fields=[
-                ('message_id', models.UUIDField(default=uuid.uuid4, editable=False, primary_key=True, serialize=False)),
-                ('role', models.CharField(choices=[('system', 'System'), ('user', 'User')], db_index=True, default='user', max_length=10)),
-                ('message', models.TextField()),
-                ('created_at', models.DateTimeField(auto_now_add=True, db_index=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('conversation', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='messages', to='conversation.conversation')),
+                (
+                    "message_id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        editable=False,
+                        primary_key=True,
+                        serialize=False,
+                    ),
+                ),
+                (
+                    "role",
+                    models.CharField(
+                        choices=[("system", "System"), ("user", "User")],
+                        db_index=True,
+                        default="user",
+                        max_length=10,
+                    ),
+                ),
+                ("message", models.TextField()),
+                ("created_at", models.DateTimeField(auto_now_add=True, db_index=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "conversation",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="messages",
+                        to="conversation.conversation",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'message',
-                'ordering': ['created_at', 'message_id'],
-                'indexes': [models.Index(fields=['conversation', 'created_at'], name='message_convers_5aa82f_idx')],
+                "db_table": "message",
+                "ordering": ["created_at", "message_id"],
+                "indexes": [
+                    models.Index(
+                        fields=["conversation", "created_at"],
+                        name="message_convers_5aa82f_idx",
+                    )
+                ],
             },
         ),
     ]

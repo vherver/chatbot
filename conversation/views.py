@@ -7,8 +7,10 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
 from conversation.models import Conversation, Message
-from conversation.serializer import MessageRequestSerializer, \
-    ConversationResponseSerializer
+from conversation.serializer import (
+    MessageRequestSerializer,
+    ConversationResponseSerializer,
+)
 from lms import OpenAIClient
 
 
@@ -22,6 +24,7 @@ class MessageView(CreateAPIView):
         "message": "string"
     }
     """
+
     serializer_class = MessageRequestSerializer
 
     @transaction.atomic
@@ -36,14 +39,13 @@ class MessageView(CreateAPIView):
         conversation, created = self.get_conversation(conversation_id)
 
         if created:
-            topic, stance, bot_response = client.get_topic_and_stance(
-                message=user_text)
+            topic, stance, bot_response = client.get_topic_and_stance(message=user_text)
             conversation.set_topic_and_stance(topic, stance)
         else:
             messages = self.get_last_messages(conversation)
-            bot_response = client.debate_reply(conversation.topic,
-                                               conversation.stance, messages,
-                                               user_text)
+            bot_response = client.debate_reply(
+                conversation.topic, conversation.stance, messages, user_text
+            )
 
         self.create_message(conversation, user_text, Message.Role.USER)
         self.create_message(conversation, bot_response, Message.Role.SYSTEM)
@@ -69,10 +71,7 @@ class MessageView(CreateAPIView):
         return conversation, created
 
     @staticmethod
-    def create_message(
-            conversation: Conversation,
-            message: str,
-            role: str) -> Message:
+    def create_message(conversation: Conversation, message: str, role: str) -> Message:
 
         message = Message.objects.create(
             conversation=conversation,
@@ -84,7 +83,4 @@ class MessageView(CreateAPIView):
     @staticmethod
     def get_last_messages(conversation: Conversation) -> List[Dict[str, str]]:
         qs = Message.get_last_messages_from_conversation(conversation)
-        return [
-            {"role": m.role, "content": m.message}
-            for m in qs
-        ]
+        return [{"role": m.role, "content": m.message} for m in qs]

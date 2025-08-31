@@ -16,7 +16,9 @@ def test_conversation_set_topic_and_stance():
 @pytest.mark.django_db
 def test_message_str_returns_expected_format():
     conv = Conversation.objects.create(topic="Test", stance="pro")
-    msg = Message.objects.create(conversation=conv, role=Message.Role.USER, message="hello")
+    msg = Message.objects.create(
+        conversation=conv, role=Message.Role.USER, message="hello"
+    )
 
     s = str(msg)
     assert str(conv.conversation_id) in s
@@ -30,7 +32,9 @@ def test_get_last_messages_from_conversation_returns_latest_first():
     msgs = []
     for i in range(6):
         msgs.append(
-            Message.objects.create(conversation=conv, role=Message.Role.USER, message=f"msg {i}")
+            Message.objects.create(
+                conversation=conv, role=Message.Role.USER, message=f"msg {i}"
+            )
         )
 
     last_msgs = Message.get_last_messages_from_conversation(conv, quantity=5)

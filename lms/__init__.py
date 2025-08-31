@@ -37,7 +37,7 @@ class OpenAIClient:
                 "from the message; if ambiguous, pick 'pro'. Add the first "
                 "response to user related of topic and bot stance as response"
                 "Return ONLY a JSON"
-            )
+            ),
         }
 
         user = {"role": "user", "content": message}
@@ -47,18 +47,13 @@ class OpenAIClient:
             input=[system, user],
             temperature=0,
             max_output_tokens=120,
-
         )
 
         data = json.loads(resp.output_text)
         return data["topic"], data["bot_stance"], data["response"]
 
     def debate_reply(
-            self,
-            topic: str,
-            stance: str,
-            history: List[Dict],
-            user_text: str
+        self, topic: str, stance: str, history: List[Dict], user_text: str
     ) -> str:
         """
         Prepare response opposite to user
@@ -77,7 +72,7 @@ class OpenAIClient:
                 f"Topic: {topic}"
                 f"Stance: {stance}"
                 "Never change your stance or the topic."
-            )
+            ),
         }
 
         history.append({"role": "user", "content": user_text})

@@ -7,10 +7,9 @@ class Conversation(models.Model):
     """
     Represents a user conversation.
     """
+
     conversation_id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False
+        primary_key=True, default=uuid.uuid4, editable=False
     )
     topic = models.TextField()
     stance = models.CharField(max_length=5)
@@ -35,8 +34,7 @@ class Message(models.Model):
         SYSTEM = "system", "System"
         USER = "user", "User"
 
-    message_id = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                                  editable=False)
+    message_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
 
     conversation = models.ForeignKey(
         Conversation,
@@ -46,10 +44,7 @@ class Message(models.Model):
     )
 
     role = models.CharField(
-        max_length=10,
-        choices=Role.choices,
-        default=Role.USER,
-        db_index=True
+        max_length=10, choices=Role.choices, default=Role.USER, db_index=True
     )
     message = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
@@ -67,17 +62,15 @@ class Message(models.Model):
 
     @classmethod
     def get_last_messages_from_conversation(
-            cls,
-            conversation: Conversation,
-            quantity: int = 5) -> QuerySet["Message"]:
+        cls, conversation: Conversation, quantity: int = 5
+    ) -> QuerySet["Message"]:
         """
         Retrieve the latest messages from a given conversation.
         """
         qs = (
-                 cls.objects
-                 .filter(conversation=conversation)
-                 .select_related("conversation")
-                 .order_by("-created_at")
-             )[: max(quantity, 0)]
+            cls.objects.filter(conversation=conversation)
+            .select_related("conversation")
+            .order_by("-created_at")
+        )[: max(quantity, 0)]
 
         return qs

@@ -7,6 +7,7 @@ from rest_framework.test import APIClient
 from conversation.models import Conversation, Message
 from conversation.views import MessageView
 
+
 class MessageViewTests(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -19,7 +20,9 @@ class MessageViewTests(TestCase):
     ):
         mock_client = MockClient.return_value
         mock_client.get_topic_and_stance.return_value = (
-            self.topic, "pro", "Hello bot!"
+            self.topic,
+            "pro",
+            "Hello bot!",
         )
 
         payload = {"conversation_id": None, "message": "hola"}
@@ -35,14 +38,19 @@ class MessageViewTests(TestCase):
     @patch("conversation.views.OpenAIClient")
     def test_existing_conversation_calls_debate_reply(self, MockClient):
         conversation = Conversation.objects.create(topic=self.topic, stance="pro")
-        Message.objects.create(conversation=conversation, role=Message.Role.USER, message="Prev msg")
+        Message.objects.create(
+            conversation=conversation, role=Message.Role.USER, message="Prev msg"
+        )
 
         mock_client = MockClient.return_value
         mock_client.debate_reply.return_value = "Bot answer"
 
         response = self.client.post(
             self.url,
-            {"conversation_id": str(conversation.conversation_id), "message": "New msg"},
+            {
+                "conversation_id": str(conversation.conversation_id),
+                "message": "New msg",
+            },
             format="json",
         )
 
@@ -103,8 +111,12 @@ class MessageViewStaticMethodsTests(TestCase):
         self.assertEqual(msg.conversation, self.conversation)
 
     def test_get_last_messages_returns_dicts(self):
-        Message.objects.create(conversation=self.conversation, role=Message.Role.USER, message="Msg1")
-        Message.objects.create(conversation=self.conversation, role=Message.Role.SYSTEM, message="Msg2")
+        Message.objects.create(
+            conversation=self.conversation, role=Message.Role.USER, message="Msg1"
+        )
+        Message.objects.create(
+            conversation=self.conversation, role=Message.Role.SYSTEM, message="Msg2"
+        )
         result = MessageView.get_last_messages(self.conversation)
         self.assertEqual(len(result), 2)
         self.assertEqual(result[0]["role"], "system")
