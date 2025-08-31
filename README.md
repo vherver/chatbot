@@ -24,7 +24,7 @@ make test        # Run tests inside Docker
 make down        # Stop running services
 make clean       # Stop and remove containers, networks, volumes
 ```
-
+---
 ## 🧪 Running Tests & Coverage
 
 To execute all tests:
@@ -33,6 +33,7 @@ To execute all tests:
 make test
 ```
 
+---
 ## 📊 Test Coverage
 
 ```python
@@ -66,7 +67,6 @@ Example deployed URL:
 - **Swagger (drf-yasg)** for API documentation  
 - **OpenAI Client** integration  
 - **Docker + Docker Compose** for containerization  
-- **Coverage + Pytest/Django Test Runner** for testing  
-
+- **Coverage + Pytest/Django Test Runner** for testing
 ---
 

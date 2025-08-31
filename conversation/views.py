@@ -1,9 +1,6 @@
 from typing import List, Dict
-from uuid import UUID
 
 from django.db import transaction
-from django.db.models import QuerySet
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 from rest_framework.generics import CreateAPIView

@@ -18,9 +18,6 @@ class MessageRequestSerializer(serializers.Serializer):
     )
     message = serializers.CharField(max_length=500)
 
-from rest_framework import serializers
-from .models import Conversation, Message
-
 
 class MessageSerializer(serializers.ModelSerializer):
     """
