@@ -138,3 +138,7 @@ OPENAI_TEMPERATURE = 0.7
 OPENAI_MAX_OUTPUT_TOKENS = 400
 
 SWAGGER_USE_COMPAT_RENDERERS = False
+
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
