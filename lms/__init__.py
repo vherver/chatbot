@@ -61,6 +61,9 @@ class OpenAIClient:
             history: List[Dict],
             user_text: str
     ) -> str:
+        """
+        Prepare response opposite to user
+        """
 
         sys_behavior = {
             "role": "system",
