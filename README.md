@@ -1,6 +1,6 @@
 # 🤖 Chatbot Debate API  
 
-![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)
+[![codecov](https://codecov.io/gh/vherver/chatbot/branch/main/graph/badge.svg)](https://codecov.io/gh/TU_USUARIO/TU_REPO)
 ![Python](https://img.shields.io/badge/python-3.12-blue.svg)
 ![Django](https://img.shields.io/badge/django-5.0-green.svg)
 [![Heroku](https://img.shields.io/badge/deployed-Heroku-7056bf.svg)](https://chatbot-herver-4232679316c7.herokuapp.com/)
