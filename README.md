@@ -1,7 +1,7 @@
 # 🤖 Chatbot Debate API  
 
-[![Tests](https://github.com/herver/chatbot/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/herver/chatbot/actions/workflows/tests.yml)
-[![codecov](https://codecov.io/gh/herver/chatbot/branch/main/graph/badge.svg)](https://codecov.io/gh/herver/chatbot)
+[![Tests](https://github.com/vherver/chatbot/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/vherver/chatbot/actions/workflows/tests.yml)
+[![codecov](https://codecov.io/gh/vherver/chatbot/branch/main/graph/badge.svg)](https://codecov.io/gh/vherver/chatbot)
 ![Python](https://img.shields.io/badge/python-3.12-blue.svg)
 ![Django](https://img.shields.io/badge/django-5.0-green.svg)
 [![Heroku](https://img.shields.io/badge/deployed-Heroku-7056bf.svg)](https://chatbot-herver-4232679316c7.herokuapp.com/)
