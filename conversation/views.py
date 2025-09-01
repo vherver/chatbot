@@ -45,10 +45,10 @@ class MessageView(CreateAPIView):
             messages = self.get_last_messages(conversation)
             conv_topic = conversation.topic
             conv_stance = conversation.stance
-            if (conv_topic == "Undefined" or conversation.stance ==
-                    "und"):
+            if conv_topic == "Undefined" or conversation.stance == "und":
                 topic, stance, bot_response = client.get_topic_and_stance(
-                    message=user_text)
+                    message=user_text
+                )
                 conversation.set_topic_and_stance(topic, stance)
 
             bot_response = client.debate_reply(

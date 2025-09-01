@@ -4,6 +4,7 @@ from unittest.mock import MagicMock, patch
 from chatbot import settings
 from lms import OpenAIClient
 
+
 @pytest.mark.django_db
 @patch("lms.OpenAI")
 def test_openai_client_initialization(MockOpenAI):
@@ -21,7 +22,8 @@ def test_openai_client_initialization(MockOpenAI):
 def test_get_topic_and_stance_parses_response(MockOpenAI, settings):
     mock_instance = MockOpenAI.return_value
     mock_resp = MagicMock()
-    mock_resp.output_text = '{"topic": "AI", "bot_stance": "pro", "response": "Hello!"}'
+    text = '{"topic": "AI", "bot_stance": "pro", "response": "Hello!"}'
+    mock_resp.output_text = text
     mock_instance.responses.create.return_value = mock_resp
 
     client = OpenAIClient()
