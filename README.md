@@ -1,4 +1,12 @@
-# Chatbot Debate API
+# 🤖 Chatbot Debate API  
+
+![Coverage](https://img.shields.io/badge/coverage-100%25-brightgreen.svg)
+![Python](https://img.shields.io/badge/python-3.12-blue.svg)
+![Django](https://img.shields.io/badge/django-5.0-green.svg)
+[![Heroku](https://img.shields.io/badge/deployed-Heroku-7056bf.svg)](https://chatbot-herver-4232679316c7.herokuapp.com/)
+
+This is a Django 5 + Django REST Framework project that provides an API for starting and managing debate-style conversations with an AI bot powered by OpenAI.
+
 
 This project is a **Django + DRF** API containerized with Docker.  
 It provides a chatbot that debates with the user based on a topic and stance inferred from messages.  
@@ -9,6 +17,16 @@ It also includes **Swagger documentation** and a **Postman collection** for easy
 ## 📦 Requirements
 - Docker & Docker Compose  
 - Python 3.12 (only required if running locally without Docker)  
+
+---
+
+## 🔑 Environment Variables
+
+The application uses a `.env` file to manage secrets and database configuration.  
+
+- `.env.example` is included in the repo as a template.  
+- The **real `.env` file will be provided by email in a `.zip`**.  
+- You must copy `.env.example` → `.env` and adjust values accordingly.  
 
 ---
 
@@ -24,6 +42,7 @@ make test        # Run tests inside Docker
 make down        # Stop running services
 make clean       # Stop and remove containers, networks, volumes
 ```
+
 ---
 ## 🧪 Running Tests & Coverage
 
@@ -36,8 +55,8 @@ make test
 ---
 ## 📊 Test Coverage
 
-```python
-coverage report -m
+```bash
+pytest --cov=. --cov-report=term-missing
 ```
 
 | File                         | Stmts | Miss | Cover | Missing |
@@ -50,8 +69,8 @@ coverage report -m
 | conversation/models.py       | 35    | 0    | 100%  | -       |
 | conversation/serializer.py   | 19    | 0    | 100%  | -       |
 | conversation/urls.py         | 3     | 0    | 100%  | -       |
-| conversation/views.py        | 50    | 0    | 100%  | -       |
-| lms/__init__.py              | 21    | 0    | 100%  | -       |
+| conversation/views.py        | 52    | 0    | 100%  | -       |
+| lms/__init__.py              | 21 7  | 0    | 100%  | -       |
 | **TOTAL**                    | 164   | 0    | **100%** | -   |
 
 ## 🚀 Deployment
