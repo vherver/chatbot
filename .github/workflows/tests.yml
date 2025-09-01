@@ -19,7 +19,7 @@ jobs:
           POSTGRES_PASSWORD: debate_pass
         ports: ["5432:5432"]
         options: >-
-          --health-cmd pg_isready
+          --health-cmd pg_isready -U debate_user -d debate_db
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -37,9 +37,20 @@ jobs:
           pip install -r requirements.txt
           pip install pytest pytest-django pytest-cov codecov
 
+      - name: Wait for Postgres
+        run: |
+          until pg_isready -h localhost -p 5432 -U debate_user; do
+            echo "⏳ Waiting for Postgres..."
+            sleep 2
+          done
+
       - name: Run tests with coverage
         env:
           DJANGO_SETTINGS_MODULE: chatbot.settings
+          POSTGRES_HOST: localhost
+          POSTGRES_DB: debate_db
+          POSTGRES_USER: debate_user
+          POSTGRES_PASSWORD: debate_pass
         run: |
           pytest --cov=. --cov-report=xml
 
