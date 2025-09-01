@@ -6,7 +6,6 @@ from rest_framework.exceptions import NotFound
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
 
-from chatbot import settings
 from conversation.models import Conversation, Message
 from conversation.serializer import (
     MessageRequestSerializer,

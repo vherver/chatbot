@@ -3,3 +3,7 @@ omit =
     manage.py
     */migrations/*
     */tests/*
+    settings.py
+    urls.py
+    wsgi.py
+    asgi.py

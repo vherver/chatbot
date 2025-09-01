@@ -15,7 +15,7 @@ class MessageViewTests(TestCase):
         self.topic = "test topic"
 
     @patch("conversation.views.OpenAIClient")
-    def test_create_new_conversation_calls_get_topic_and_stance_and_persists_messages(
+    def test_create_new_conv_calls_get_topic_and_stance_and_persists_messages(
         self, MockClient
     ):
         mock_client = MockClient.return_value
@@ -87,6 +87,26 @@ class MessageViewTests(TestCase):
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         mock_client.debate_reply.assert_called_once_with(self.topic, "pro", [], "Start")
+
+    @patch("conversation.views.OpenAIClient")
+    def test_existing_conv_with_undefined_topic_triggers_get_topic_and_stance(
+            self, MockClient):
+        conv = Conversation.objects.create(topic="Undefined", stance="pro")
+
+        mock_client = MockClient.return_value
+        mock_client.get_topic_and_stance.return_value = (
+        "undefined", "und", "Clarified response")
+        mock_client.debate_reply.return_value = "Debate reply"
+
+        response = self.client.post(
+            self.url,
+            {"conversation_id": str(conv.conversation_id),
+             "message": "Hola"},
+            format="json",
+        )
+
+        assert response.status_code == status.HTTP_201_CREATED
+        mock_client.get_topic_and_stance.assert_called_once()
 
 
 class MessageViewStaticMethodsTests(TestCase):
